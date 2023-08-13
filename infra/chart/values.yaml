@@ -1,8 +1,8 @@
 # -- image related configurations
 image:
   # -- image to pull for the relabeler
-  # -- for ARM image, ghcr.io/atomicloud/kubefwd-relabler/relaber-arm
-  repository: ghcr.io/atomicloud/kubefwd-labeler/labeler-amd
+  # -- for AMD image, ghcr.io/atomicloud/label-kubefwd/labeler-amd
+  repository: ghcr.io/atomicloud/label-kubefwd/labeler-arm
   # -- image pull policy
   pullPolicy: IfNotPresent
   # -- version tag

@@ -15,9 +15,9 @@ App to add kubefwd labels to services
 | config.interval | int | `1` | number of seconds between each relabel attempt |
 | config.services | list | `["metrics-server"]` | additional service to relabel |
 | fullnameOverride | string | `""` | override the fullname directive |
-| image | object | `{"pullPolicy":"IfNotPresent","repository":"ghcr.io/atomicloud/kubefwd-labeler/labeler-amd","tag":""}` | image related configurations |
+| image | object | `{"pullPolicy":"IfNotPresent","repository":"ghcr.io/atomicloud/label-kubefwd/labeler-arm","tag":""}` | image related configurations |
 | image.pullPolicy | string | `"IfNotPresent"` | image pull policy |
-| image.repository | string | `"ghcr.io/atomicloud/kubefwd-labeler/labeler-amd"` | for ARM image, ghcr.io/atomicloud/kubefwd-relabler/relaber-arm |
+| image.repository | string | `"ghcr.io/atomicloud/label-kubefwd/labeler-arm"` | for AMD image, ghcr.io/atomicloud/label-kubefwd/labeler-amd |
 | image.tag | string | `""` | version tag |
 | imagePullSecrets | list | `[]` | image pull secrets for pulling the image |
 | labels | object | `{}` | additional labels to add to all resources |
