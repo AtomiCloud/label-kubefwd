@@ -1,3 +1,10 @@
+## [1.2.0](https://github.com/AtomiCloud/label-kubefwd/compare/v1.1.2...v1.2.0) (2023-08-13)
+
+
+### New Features
+
+* check service readiness before labeling ([b078d0c](https://github.com/AtomiCloud/label-kubefwd/commit/b078d0c0d32ea2b814b6677a9db1cc31c200aee7))
+
 ## [1.1.2](https://github.com/AtomiCloud/label-kubefwd/compare/v1.1.1...v1.1.2) (2023-08-13)
 
 
