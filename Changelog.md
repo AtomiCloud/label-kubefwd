@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/AtomiCloud/label-kubefwd/compare/v1.2.0...v1.2.1) (2023-08-13)
+
+
+### Bug Fixes
+
+* missing permission to list pods ([95bfea1](https://github.com/AtomiCloud/label-kubefwd/commit/95bfea1b603318bfdcf000749fb9d3c1cbbb321e))
+
 ## [1.2.0](https://github.com/AtomiCloud/label-kubefwd/compare/v1.1.2...v1.2.0) (2023-08-13)
 
 
