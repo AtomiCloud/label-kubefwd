@@ -94,7 +94,9 @@ jobs:
 
   release:
     name: Semantic Release
-    needs: publish
+    needs:
+      - publish
+      - precommit
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
