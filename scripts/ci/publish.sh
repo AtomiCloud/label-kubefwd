@@ -44,6 +44,7 @@ echo "${DOCKER_PASSWORD}" | helm registry login "${DOMAIN}" -u "${DOCKER_USER}" 
 
 # packaging helm chart
 echo "📦 Packaging helm chart..."
+helm dependency build
 helm package . -u --version "${HELM_VERSION}" --app-version "${IMAGE_VERSION}" -d ./uploads
 
 # push helm chart
