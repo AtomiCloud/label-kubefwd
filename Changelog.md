@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/AtomiCloud/label-kubefwd/compare/v1.1.1...v1.1.2) (2023-08-13)
+
+
+### Bug Fixes
+
+* incorrect default image ([e952540](https://github.com/AtomiCloud/label-kubefwd/commit/e952540277b0b9edd84fbefac2c3ad4b42487702))
+
 ## [1.1.1](https://github.com/AtomiCloud/label-kubefwd/compare/v1.1.0...v1.1.1) (2023-08-13)
 
 
