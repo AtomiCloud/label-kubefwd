@@ -1,3 +1,12 @@
+## [1.0.1](https://github.com/AtomiCloud/label-kubefwd/compare/v1.0.0...v1.0.1) (2023-08-13)
+
+
+### Bug Fixes
+
+* exclude changelog ([4b9af74](https://github.com/AtomiCloud/label-kubefwd/commit/4b9af74f67de94511c7b0b4b521d2f53fa226fb7))
+* missing chart dir ([01055ca](https://github.com/AtomiCloud/label-kubefwd/commit/01055cabda8c0722fedda76f8ca61bbb638eb552))
+* release depends on success of all precommit ([677bc47](https://github.com/AtomiCloud/label-kubefwd/commit/677bc47dfb871e03a8bb02a341a60cdc0f272c20))
+
 ## 1.0.0 (2023-08-13)
 
 
