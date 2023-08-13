@@ -1,0 +1,82 @@
+# -- image related configurations
+image:
+  # -- image to pull for the relabeler
+  # -- for ARM image, ghcr.io/atomicloud/kubefwd-relabler/relaber-arm
+  repository: ghcr.io/atomicloud/kubefwd-labeler/labeler-amd
+  # -- image pull policy
+  pullPolicy: IfNotPresent
+  # -- version tag
+  tag: ""
+
+# -- configuration for the relabeler
+config:
+  # -- additional service to relabel
+  services:
+    - metrics-server
+  # -- number of seconds between each relabel attempt
+  interval: 1
+
+# -- command to start the relabeler
+command:
+  - /app/main.sh
+  - /app/services.yaml
+
+# -- additional labels to add to all resources
+labels: {}
+
+# -- additional annotations to add to all resources
+annotations: {}
+
+# -- image pull secrets for pulling the image
+imagePullSecrets: [ ]
+
+# -- override the chart and release name
+nameOverride: ""
+
+# -- override the fullname directive
+fullnameOverride: ""
+
+# -- service account related configurations
+serviceAccount:
+  # -- additional annotations to add to the service account
+  annotations: { }
+  # -- name of the service account to use
+  name: ""
+
+# -- pod security context
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 10001
+  runAsGroup: 10001
+
+# -- security context
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 10001
+  runAsGroup: 10001
+  privileged: false
+  seccompProfile:
+    type: RuntimeDefault
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+  readOnlyRootFilesystem: false
+
+# -- resource requests and limits
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 50m
+    memory: 64Mi
+
+# -- node selector
+nodeSelector: { }
+
+# -- tolerations
+tolerations: [ ]
+
+# -- affinity
+affinity: { }

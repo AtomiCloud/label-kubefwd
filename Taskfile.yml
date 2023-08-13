@@ -1,0 +1,34 @@
+version: "3"
+
+vars:
+  CHART_PATH: infra/chart
+  RELEASE_NAME: kubefwd-labeler
+  IMAGE: labeler
+  LOCAL_REPO: lapras.registry.lvh.me:10112
+includes:
+  helm:
+    taskfile: tasks/Taskfile.helm.yml
+    vars:
+      LANDSCAPE: ""
+  helm:lapras:
+    taskfile: tasks/Taskfile.helm.yml
+    vars:
+      LANDSCAPE: .lapras
+  docker: tasks/Taskfile.docker.yml
+
+tasks:
+  check:
+    desc: Run pre-commit checks
+    cmds:
+      - ./scripts/ci/pre-commit.sh
+
+  # emulation
+  start:cluster:
+    desc: Setup local cluster
+    cmds:
+      - ./scripts/local/create-k3d-cluster.sh {{.CLI_ARGS}}
+
+  stop:cluster:
+    desc: Clears local cluster
+    cmds:
+      - ./scripts/local/delete-k3d-cluster.sh {{.CLI_ARGS}}

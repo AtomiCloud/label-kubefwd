@@ -1,0 +1,45 @@
+version: "3"
+
+tasks:
+  update:
+    desc: Update helm chart
+    cmds:
+      - helm dependency update {{ .CHART_PATH }}
+
+  template:
+    desc: Template helm chart
+    deps:
+      - update
+    cmds:
+      - >-
+        helm template {{ .RELEASE_NAME }} {{ .CHART_PATH }} 
+        --values {{ .CHART_PATH }}/values.yaml 
+        --values {{ .CHART_PATH }}/values{{ .LANDSCAPE }}.yaml 
+        {{.CLI_ARGS}}
+
+  template:debug:
+    desc: Template helm chart with debug
+    deps:
+      - update
+    cmds:
+      - >-
+        helm template {{ .RELEASE_NAME }} {{ .CHART_PATH }} --debug
+        --values {{ .CHART_PATH }}/values.yaml 
+        --values {{ .CHART_PATH }}/values{{ .LANDSCAPE }}.yaml 
+        {{.CLI_ARGS}}
+
+  install:
+    desc: Install helm chart
+    deps:
+      - update
+    cmds:
+      - >-
+        helm upgrade --install {{ .RELEASE_NAME }} {{ .CHART_PATH }}
+        --values {{ .CHART_PATH }}/values.yaml 
+        --values {{ .CHART_PATH }}/values{{ .LANDSCAPE }}.yaml 
+        {{.CLI_ARGS}}
+
+  remove:
+    desc: Remove helm chart
+    cmds:
+      - helm uninstall {{ .RELEASE_NAME }}

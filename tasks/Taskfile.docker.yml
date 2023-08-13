@@ -1,0 +1,16 @@
+version: "3"
+
+tasks:
+  build:local:
+    desc: Build local image
+    cmds:
+      - docker build -t {{.LOCAL_REPO}}/{{.IMAGE}}:{{.CLI_ARGS | default "latest"}} -f ./infra/Dockerfile .
+  push:local:
+    desc: Push local image
+    cmds:
+      - docker push {{.LOCAL_REPO}}/{{.IMAGE}}:{{.CLI_ARGS | default "latest"}}
+  local:
+    desc: Build and push latest
+    cmds:
+      - task: build:local
+      - task: push:local

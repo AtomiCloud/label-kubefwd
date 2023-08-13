@@ -1,0 +1,4 @@
+.idea
+.direnv
+.task
+.pre-commit-config.yaml

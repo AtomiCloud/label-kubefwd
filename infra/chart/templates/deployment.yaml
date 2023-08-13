@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "kubefwd-labeler.fullname" . }}
+  labels: {{- include "kubefwd-labeler.labels" . | nindent 4 }}
+  annotations: {{- toYaml .Values.annotations | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "kubefwd-labeler.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations: {{- toYaml .Values.annotations | nindent 8 }}
+      labels: {{- include "kubefwd-labeler.selectorLabels" . | nindent 8 }}
+        {{ include "kubefwd-labeler.labels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "kubefwd-labeler.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          command: {{ toYaml .Values.command | nindent 12 }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /app/services.yaml
+              name: config-volume
+              subPath: services.yaml
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ include "kubefwd-labeler.fullname-with-suffix" (dict "arg" "config" "root" .) }}
+            items:
+              - key: services.yaml
+                path: services.yaml
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

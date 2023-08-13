@@ -1,0 +1,119 @@
+name: CI-CD
+
+on:
+  push:
+
+env:
+  DOCKER_DOMAIN: ghcr.io
+  CHART_NAME: "kubefwd-labeler"
+
+jobs:
+  precommit:
+    name: Pre-commit Check
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - name: Run pre-commit
+        run: nix develop .#ci -c ./scripts/ci/pre-commit.sh
+
+  build:
+    name: Build Docker
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        configs:
+          - image-name: labeler-amd
+            dockerfile: ./infra/Dockerfile
+            context: .
+            platform: linux/amd64
+          - image-name: labeler-arm
+            dockerfile: ./infra/Dockerfile
+            context: .
+            platform: linux/arm64
+    env:
+      STRAT_DOCKER_IMAGE: ${{ matrix.configs.image-name }}
+      STRAT_DOCKERFILE: ${{ matrix.configs.dockerfile }}
+      STRAT_DOCKER_CONTEXT: ${{ matrix.configs.context }}
+      STRAT_DOCKER_PLATFORM: ${{ matrix.configs.platform }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: rlespinasse/github-slug-action@v3.x
+      - uses: docker/setup-buildx-action@v2
+      - uses: docker/setup-qemu-action@v2
+
+      - name: Build and Push Docker
+        run: ./scripts/ci/ci-docker.sh
+        env:
+          CI_DOCKER_IMAGE: ${{ env.STRAT_DOCKER_IMAGE }}
+          CI_DOCKER_CONTEXT: ${{ env.STRAT_DOCKER_CONTEXT }}
+          CI_DOCKERFILE: ${{ env.STRAT_DOCKERFILE }}
+          CI_DOCKER_PLATFORM: ${{ env.STRAT_DOCKER_PLATFORM }}
+
+          DOMAIN: ${{ env.DOCKER_DOMAIN }}
+
+          GITHUB_REPO_REF: ${{ github.repository }}
+          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_BRANCH: ${{ env.GITHUB_REF_SLUG }}
+
+          DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+          DOCKER_USER: ${{ github.actor }}
+
+          S3_KEY_ID: ${{ secrets.R2_KEY_ID }}
+          S3_KEY_SECRET: ${{ secrets.R2_KEY_SECRET }}
+          S3_URL: "https://9f21cac25548ad04899fc78c8101e7de.r2.cloudflarestorage.com/ci-cache"
+          S3_BUCKET: "ci-cache"
+          S3_REGION: "APAC"
+
+          LATEST_BRANCH: "main"
+
+  publish:
+    name: Publish Helm
+    needs: build
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: rlespinasse/github-slug-action@v3.x
+
+      - name: Publish
+        env:
+          DOMAIN: ${{ env.DOCKER_DOMAIN }}
+          CHART_REF: ${{ env.CHART_NAME }}-chart
+
+          GITHUB_REPO_REF: ${{ github.repository }}
+          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_BRANCH: ${{ env.GITHUB_REF_SLUG_URL }}
+
+          DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+          DOCKER_USER: ${{ github.actor }}
+
+        run: nix develop .#ci -c scripts/ci/publish.sh
+
+  release:
+    name: Semantic Release
+    needs: publish
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: rlespinasse/github-slug-action@v3.x
+
+      - name: Release
+        env:
+          DOMAIN: ${{ env.DOCKER_DOMAIN }}
+          CHART_REF: ${{ env.CHART_NAME }}-chart
+
+          GITHUB_REPO_REF: ${{ github.repository }}
+          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_BRANCH: ${{ env.GITHUB_REF_SLUG_URL }}
+
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+          DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+          DOCKER_USER: ${{ github.actor }}
+        run: nix develop .#releaser -c scripts/ci/release.sh
