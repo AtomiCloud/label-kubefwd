@@ -7,7 +7,7 @@ pre-commit-lib.run {
     # formatter
     treefmt = {
       enable = true;
-      excludes = [ ".*infra/.*" "pnpm-lock.yaml" ];
+      excludes = [ ".*infra/.*" "pnpm-lock.yaml" "Changelog.md" ];
     };
     # linters From https://github.com/cachix/pre-commit-hooks.nix
     shellcheck = {
