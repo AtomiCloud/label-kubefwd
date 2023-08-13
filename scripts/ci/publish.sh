@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 [ "${DOMAIN}" = '' ] && echo "❌ 'DOMAIN' env var not set" && exit 1
-[ "${CHART_REF}" = '' ] && echo "❌ 'CHART_REF' env var not set" && exit 1
 
 [ "${DOCKER_PASSWORD}" = '' ] && echo "❌ 'DOCKER_PASSWORD' env var not set" && exit 1
 [ "${DOCKER_USER}" = '' ] && echo "❌ 'DOCKER_USER' env var not set" && exit 1
@@ -50,7 +49,7 @@ helm package . -u --version "${HELM_VERSION}" --app-version "${IMAGE_VERSION}" -
 # push helm chart
 echo "📤 Pushing helm chart..."
 for filename in ./uploads/*.tgz; do
-  OCI_REF="$(echo "oci://${DOMAIN}/${GITHUB_REPO_REF}/${CHART_REF}" | tr '[:upper:]' '[:lower:]')"
+  OCI_REF="$(echo "oci://${DOMAIN}/${GITHUB_REPO_REF}" | tr '[:upper:]' '[:lower:]')"
   echo "📤 Pushing ${filename} to ${OCI_REF}"
   helm push "$filename" "${OCI_REF}"
 done
