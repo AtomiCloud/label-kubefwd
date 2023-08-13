@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/AtomiCloud/label-kubefwd/compare/v1.1.0...v1.1.1) (2023-08-13)
+
+
+### Bug Fixes
+
+* remove chart-ref ([e75a3b5](https://github.com/AtomiCloud/label-kubefwd/commit/e75a3b53d51b984f82d27d2b9a034cf3a7b50370))
+
 ## [1.1.0](https://github.com/AtomiCloud/label-kubefwd/compare/v1.0.1...v1.1.0) (2023-08-13)
 
 
