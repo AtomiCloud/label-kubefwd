@@ -26,7 +26,7 @@ jobs:
           - image-name: labeler-amd
             dockerfile: ./infra/Dockerfile
             context: .
-            platform: linux/amd64
+            platform: linux/amd
           - image-name: labeler-arm
             dockerfile: ./infra/Dockerfile
             context: .
