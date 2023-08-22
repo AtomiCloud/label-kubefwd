@@ -26,11 +26,11 @@ jobs:
           - image-name: labeler-amd
             dockerfile: ./infra/Dockerfile
             context: .
-            platform: linux/amd64/v4
+            platform: linux/amd64
           - image-name: labeler-arm
             dockerfile: ./infra/Dockerfile
             context: .
-            platform: linux/arm/v7
+            platform: linux/arm
     env:
       STRAT_DOCKER_IMAGE: ${{ matrix.configs.image-name }}
       STRAT_DOCKERFILE: ${{ matrix.configs.dockerfile }}
