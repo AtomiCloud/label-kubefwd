@@ -23,10 +23,10 @@ jobs:
     strategy:
       matrix:
         configs:
-          - image-name: labeler-amd
-            dockerfile: ./infra/Dockerfile
-            context: .
-            platform: linux/amd
+          #          - image-name: labeler-amd
+          #            dockerfile: ./infra/Dockerfile
+          #            context: .
+          #            platform: linux/amd
           - image-name: labeler-arm
             dockerfile: ./infra/Dockerfile
             context: .
