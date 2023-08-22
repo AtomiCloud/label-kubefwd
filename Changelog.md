@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/AtomiCloud/label-kubefwd/compare/v1.3.0...v1.3.1) (2023-08-22)
+
+
+### Bug Fixes
+
+* skipping services that are already labeled ([604578a](https://github.com/AtomiCloud/label-kubefwd/commit/604578a89135f5ce11f362a5944757a16e4132f5))
+
 ## [1.3.0](https://github.com/AtomiCloud/label-kubefwd/compare/v1.2.1...v1.3.0) (2023-08-22)
 
 
