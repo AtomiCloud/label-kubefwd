@@ -9,6 +9,7 @@ set -euo pipefail
 cat "$filepath" >>/dev/null || (echo "⚠️ File '$filepath' not found" && exit 1)
 
 delay="$(yq eval -o=j '.interval' "$filepath")"
+defer="$(yq eval -o=j '.defer' "$filepath")"
 
 while true; do
   # get list of servcies with `kubefwd=true` label
@@ -23,6 +24,15 @@ while true; do
     echo "🔎 Checking if service '$service' is ready..."
     ready="$(/app/check_service.sh "$service" || echo "false")"
     if [ "$ready" = 'true' ]; then
+      # check if there is kubefwd/defer annotation
+      echo "🔎 Checking if service '$service' has 'kubefwd/defer' annotation..."
+      defer_annotation="$(kubectl get svc "$service" -o json | jq -r '.metadata.annotations."kubefwd/defer"')"
+      if [ "$defer_annotation" = 'null' ]; then
+        defer_annotation="$defer"
+      fi
+      # defer the labeling based on annotation value
+      echo "🕛 Defer service '$service' labeling for '$defer_annotation' seconds..."
+      sleep "$defer_annotation"
       echo "🏷️ Labeling service '$service' with 'kubefwd=true'..."
       kubectl label svc "$service" kubefwd=true
     else
@@ -36,6 +46,17 @@ while true; do
     echo "🔎 Checking if service '$service' is ready..."
     ready="$(/app/check_service.sh "$service" || echo "false")"
     if [ "$ready" = 'true' ]; then
+
+      # check if there is kubefwd/defer annotation
+      echo "🔎 Checking if service '$service' has 'kubefwd/defer' annotation..."
+      defer_annotation="$(kubectl get svc "$service" -o json | jq -r '.metadata.annotations."kubefwd/defer"')"
+      if [ "$defer_annotation" = 'null' ]; then
+        defer_annotation="$defer"
+      fi
+      # defer the labeling based on annotation value
+      echo "🕛 Defer service '$service' labeling for '$defer_annotation' seconds..."
+      sleep "$defer_annotation"
+
       echo "🏷️ Labeling service '$service' with 'kubefwd=true'..."
       kubectl label svc "$service" kubefwd=true || true
     else

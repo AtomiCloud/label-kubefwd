@@ -30,7 +30,7 @@ jobs:
           - image-name: labeler-arm
             dockerfile: ./infra/Dockerfile
             context: .
-            platform: linux/arm64
+            platform: linux/arm
     env:
       STRAT_DOCKER_IMAGE: ${{ matrix.configs.image-name }}
       STRAT_DOCKERFILE: ${{ matrix.configs.dockerfile }}

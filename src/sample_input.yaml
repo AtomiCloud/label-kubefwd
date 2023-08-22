@@ -3,3 +3,6 @@ services:
 
 # -- number of seconds between each relabel attempt
 interval: 1
+
+# -- number of seconds to wait after pod has been ready before forwarding
+defer: 0
