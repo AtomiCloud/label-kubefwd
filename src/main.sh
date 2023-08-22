@@ -22,7 +22,7 @@ while true; do
   for service in ${services_with_kubefwd[@]}; do
     # check if service is ready
     echo "🔎 Checking if service '$service' is ready..."
-    ready="$(./src/check_service.sh "$service" || echo "false")"
+    ready="$(/app/check_service.sh "$service" || echo "false")"
     if [ "$ready" = 'true' ]; then
       # check if there is kubefwd/defer annotation
       echo "🔎 Checking if service '$service' has 'kubefwd/defer' annotation..."
@@ -49,7 +49,7 @@ while true; do
       continue # skip since already labeled
     fi
     echo "🔎 Checking if service '$service' is ready..."
-    ready="$(./src/check_service.sh "$service" || echo "false")"
+    ready="$(/app/check_service.sh "$service" || echo "false")"
     if [ "$ready" = 'true' ]; then
 
       # check if there is kubefwd/defer annotation
