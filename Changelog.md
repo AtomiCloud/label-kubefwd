@@ -1,3 +1,11 @@
+## [1.3.2](https://github.com/AtomiCloud/label-kubefwd/compare/v1.3.1...v1.3.2) (2023-08-22)
+
+
+### Bug Fixes
+
+* incorrect docker build ([b0b905e](https://github.com/AtomiCloud/label-kubefwd/commit/b0b905e51c370f467daae6b9beff24b18344a5d1))
+* incorrect path for service ([8abe470](https://github.com/AtomiCloud/label-kubefwd/commit/8abe470476cf12e755a95baa05242f0a9694f0e0))
+
 ## [1.3.1](https://github.com/AtomiCloud/label-kubefwd/compare/v1.3.0...v1.3.1) (2023-08-22)
 
 
