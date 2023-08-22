@@ -1,3 +1,10 @@
+## [1.3.0](https://github.com/AtomiCloud/label-kubefwd/compare/v1.2.1...v1.3.0) (2023-08-22)
+
+
+### New Features
+
+* defer annotation ([78976f9](https://github.com/AtomiCloud/label-kubefwd/commit/78976f9f6b8027ff5e1b318970bca71646cfe6a9))
+
 ## [1.2.1](https://github.com/AtomiCloud/label-kubefwd/compare/v1.2.0...v1.2.1) (2023-08-13)
 
 
