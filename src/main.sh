@@ -14,7 +14,7 @@ defer="$(yq eval -o=j '.defer' "$filepath")"
 while true; do
   # get list of servcies with `kubefwd=true` label
   echo "🔎 Looking up services with 'kubefwd=true' annotations..."
-  services_with_kubefwd="$(kubectl get services -o=jsonpath='{.items[?(@.metadata.annotations.kubefwd=="true")].metadata.name}')"
+  services_with_kubefwd="$(kubectl get svc -o json | jq -r '.items[] | select((.metadata.annotations."kubefwd" == "true") and (.metadata.labels == null or .metadata.labels."kubefwd" != "true")) | .metadata.name')"
 
   # Iterate through the list of services and add the "kubefwd=true" label to each of them
   echo "🏷️ Labeling services with 'kubefwd=true' annotations..."
@@ -22,7 +22,7 @@ while true; do
   for service in ${services_with_kubefwd[@]}; do
     # check if service is ready
     echo "🔎 Checking if service '$service' is ready..."
-    ready="$(/app/check_service.sh "$service" || echo "false")"
+    ready="$(./src/check_service.sh "$service" || echo "false")"
     if [ "$ready" = 'true' ]; then
       # check if there is kubefwd/defer annotation
       echo "🔎 Checking if service '$service' has 'kubefwd/defer' annotation..."
@@ -43,8 +43,13 @@ while true; do
 
   services=$(yq eval -o=j '.services' "$filepath")
   for service in $(echo "$services" | jq -cr '.[]'); do
+    echo "🔎 Checking if service '$service' has 'kubefwd=true' label..."
+    has_kubefwd_label="$(kubectl get svc "$service" -o json | jq -r '.metadata.labels."kubefwd"')"
+    if [ "$has_kubefwd_label" = 'true' ]; then
+      continue # skip since already labeled
+    fi
     echo "🔎 Checking if service '$service' is ready..."
-    ready="$(/app/check_service.sh "$service" || echo "false")"
+    ready="$(./src/check_service.sh "$service" || echo "false")"
     if [ "$ready" = 'true' ]; then
 
       # check if there is kubefwd/defer annotation

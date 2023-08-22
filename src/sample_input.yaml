@@ -1,5 +1,4 @@
-services:
-  - metrics-server
+services: []
 
 # -- number of seconds between each relabel attempt
 interval: 1
